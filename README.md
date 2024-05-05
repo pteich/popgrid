@@ -4,9 +4,9 @@ The code is a small experiment to get started with Odin. It uses Raylib to creat
 
 A settings dialog is provided using Raylib GUI to change some aspects like the number of tiles and change frequency.
 
-[![Watch it in action](popgrid.png)](https://github.com/pteich/popgrid/assets/7067763/140e08c6-849f-45dd-9afd-5382a4a43d34)
+<img width="500" alt="popgrid" src="https://github.com/pteich/popgrid/assets/7067763/4c5533b6-d953-41bb-a272-99c200fd3c47">
 
-<video src="https://github.com/pteich/popgrid/assets/7067763/140e08c6-849f-45dd-9afd-5382a4a43d34"></video>
+<video width="500" src="https://github.com/pteich/popgrid/assets/7067763/140e08c6-849f-45dd-9afd-5382a4a43d34"></video>
 
 ## Run
 
