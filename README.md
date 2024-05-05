@@ -6,6 +6,8 @@ A settings dialog is provided using Raylib GUI to change some aspects like the n
 
 [![Watch it in action](popgrid.png)](popgrid.mp4)
 
+<video src="https://github.com/pteich/popgrid/raw/main/popgrid.mp4"></video>
+
 ## Run
 
 You need a working Odin toolchain from https://odin-lang.org.
