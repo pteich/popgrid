@@ -16,11 +16,10 @@ State :: enum {
 	Settings,
 }
 
-fieldsX: f32 = 2
-fieldsY: f32 = 2
+fieldsX: f32 = 4
+fieldsY: f32 = 4
 syncHV: bool
 changeSec: f32 = 0.5
-
 opacity: u8 = 255
 
 colors := [5]raylib.Color {
@@ -68,10 +67,6 @@ main :: proc() {
 		#partial switch gState {
 		case State.Menu:
 			gState = menu(cw, ch)
-			switch {
-			case raylib.IsKeyPressed(raylib.KeyboardKey.SPACE):
-				gState = State.None
-			}
 
 		case State.Settings:
 			gState = settings(cw, ch)
@@ -81,11 +76,7 @@ main :: proc() {
 			if deltaTime == 0 {
 				randomizeColors(cw, ch, &myrand)
 			}
-			drawTiles(cw, ch, &myrand)
-			switch {
-			case raylib.IsKeyPressed(raylib.KeyboardKey.SPACE):
-				gState = State.Settings
-			}
+			gState = drawTiles(cw, ch, &myrand)
 
 			deltaTime += raylib.GetFrameTime()
 			if deltaTime > changeSec {
@@ -98,25 +89,16 @@ main :: proc() {
 }
 
 menu :: proc(cw, ch: i32) -> State {
-	text: cstring = "pop.grid"
-	fontsize: c.int = 25
-	raylib.DrawText(
-		"pop.grid",
-		cw / 2 - raylib.MeasureText(text, fontsize) / 2,
-		40,
-		fontsize,
-		raylib.BLACK,
-	)
+	renderTextCenter(cw, 40, "pop.grid", 35)
+	renderTextCenter(cw, 100, "a generative art experiment", 15)
+	renderTextCenter(cw, ch-40, "press space to start", 15)
 
-	text = "press space to start"
-	fontsize = 15
-	raylib.DrawText(
-		"press space to start",
-		cw / 2 - raylib.MeasureText(text, fontsize) / 2,
-		ch - 40,
-		fontsize,
-		raylib.BLACK,
-	)
+	switch {
+	case raylib.IsKeyPressed(raylib.KeyboardKey.SPACE):
+		fallthrough
+	case raylib.IsMouseButtonPressed(raylib.MouseButton.LEFT):
+		return State.None
+	}
 
 	return State.Menu
 }
@@ -182,7 +164,7 @@ settings :: proc(cw, ch: i32) -> State {
 	return State.Settings
 }
 
-drawTiles :: proc(cw, ch: i32, r: ^rand.Rand) {
+drawTiles :: proc(cw, ch: i32, r: ^rand.Rand) -> State {
 	hsize := cw / i32(fieldsX)
 	vsize := ch / i32(fieldsY)
 
@@ -219,6 +201,13 @@ drawTiles :: proc(cw, ch: i32, r: ^rand.Rand) {
 		15,
 		raylib.BLACK,
 	)
+
+	switch {
+	case raylib.IsKeyPressed(raylib.KeyboardKey.SPACE):
+		return State.Settings
+	}
+
+	return State.None
 }
 
 randomizeColors :: proc(cw, ch: i32, r: ^rand.Rand) {
@@ -228,4 +217,14 @@ randomizeColors :: proc(cw, ch: i32, r: ^rand.Rand) {
 		index := rand.int63(r) % 4
 		append(&colorIndexes, int(index))
 	}
+}
+
+renderTextCenter :: proc(cw: i32, ypos: i32, text: cstring, fontsize: c.int) {
+	raylib.DrawText(
+		text,
+		cw / 2 - raylib.MeasureText(text, fontsize) / 2,
+		ypos,
+		fontsize,
+		raylib.BLACK,
+	)
 }
