@@ -91,7 +91,7 @@ main :: proc() {
 menu :: proc(cw, ch: i32) -> State {
 	renderTextCenter(cw, 40, "pop.grid", 35)
 	renderTextCenter(cw, 100, "a generative art experiment", 15)
-	renderTextCenter(cw, ch-40, "press space to start", 15)
+	renderTextCenter(cw, ch - 40, "press space to start", 15)
 
 	switch {
 	case raylib.IsKeyPressed(raylib.KeyboardKey.SPACE):
@@ -108,16 +108,21 @@ settings :: proc(cw, ch: i32) -> State {
 
 	raylib.GuiLabel(raylib.Rectangle{x = 30, y = 30, width = 100, height = 30}, "settings")
 
-	if !syncHV {
-		raylib.GuiSliderBar(
-			raylib.Rectangle{x = 30, y = 80, width = 150, height = 30},
-			"",
-			fmt.ctprintf("%i horizontal tiles", int(fieldsX)),
-			&fieldsX,
-			2,
-			20,
-		)
+	sliderText := "%i horizontal tiles"
+	if syncHV {
+		sliderText = "%i tiles"
+	}
 
+	raylib.GuiSliderBar(
+		raylib.Rectangle{x = 30, y = 80, width = 150, height = 30},
+		"",
+		fmt.ctprintf(sliderText, int(fieldsX)),
+		&fieldsX,
+		2,
+		20,
+	)
+
+	if !syncHV {
 		raylib.GuiSliderBar(
 			raylib.Rectangle{x = 30, y = 140, width = 150, height = 30},
 			"",
@@ -126,24 +131,13 @@ settings :: proc(cw, ch: i32) -> State {
 			2,
 			20,
 		)
-	} else {
-		raylib.GuiSliderBar(
-			raylib.Rectangle{x = 30, y = 80, width = 150, height = 30},
-			"",
-			fmt.ctprintf("%i tiles", int(fieldsX)),
-			&fieldsX,
-			2,
-			20,
-		)
 	}
 
-	if raylib.GuiCheckBox(
-		   raylib.Rectangle{x = 30, y = 190, width = 20, height = 20},
-		   "sync horizontal and vertical",
-		   &syncHV,
-	   ) {
-
-	}
+	raylib.GuiCheckBox(
+		raylib.Rectangle{x = 30, y = 190, width = 20, height = 20},
+		"sync horizontal and vertical",
+		&syncHV,
+	)
 
 	raylib.GuiSlider(
 		raylib.Rectangle{x = 30, y = 230, width = 150, height = 30},
